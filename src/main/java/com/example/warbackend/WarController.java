@@ -1,5 +1,6 @@
 package com.example.warbackend;
 
+import java.util.Queue;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,27 +13,19 @@ public class WarController {
 
   War game = new War();
 
-  @GetMapping("/war")
-  public War wargame(@RequestParam(value = "name", defaultValue = "null") String player){
-    // todo implement war
-    if()// if null then do uuid
 
+  @GetMapping("/war")
+  public War wargame(@RequestParam(value = "name", defaultValue = "null") String player,@RequestParam(value = "p1", defaultValue = "null")String p1,@RequestParam(value = "p2", defaultValue = "null")String p2,@RequestParam(value = "p3", defaultValue = "null")String p3){
+     //
 
     return null;
   }
 
-  public War wargame(@RequestParam(value = "name"), @RequestParam(value = "")){
-    // todo implement war
-
-
-      return null;
-  }
 
   @GetMapping("/getwinsfor")
-  public Wins Wins(@RequestParam(value = "id")String query){
-
-
-    return null;
+  public long Wins(@RequestParam(value = "id")String query){
+    Wins w = new Wins(query);
+    return w.getWins();
   }
 
 
