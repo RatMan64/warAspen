@@ -1,8 +1,10 @@
 package com.example.warbackend;
 
+import java.awt.geom.RectangularShape;
 import java.util.Queue;
 import java.util.UUID;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,9 +25,11 @@ public class WarController {
 
 
   @GetMapping("/getwinsfor")
-  public long Wins(@RequestParam(value = "id")String query){
-    Wins w = new Wins(query);
-    return w.getWins();
+  public String getWins(@RequestParam(value = "id")String query){
+    System.out.println(query);
+    Wins wp = new Wins(query);
+
+    return "{ id: "+query+", wins: "+wp.getWins()+"}";
   }
 
 
