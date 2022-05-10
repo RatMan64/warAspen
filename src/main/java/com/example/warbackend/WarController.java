@@ -1,6 +1,7 @@
 package com.example.warbackend;
 
 import java.awt.geom.RectangularShape;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.UUID;
 
@@ -17,11 +18,13 @@ public class WarController {
 
 
   @GetMapping("/war")
-  public War wargame(@RequestParam(value = "name", defaultValue = "null") String player,@RequestParam(value = "p1", defaultValue = "null")String p1,@RequestParam(value = "p2", defaultValue = "null")String p2,@RequestParam(value = "p3", defaultValue = "null")String p3){
-     System.out.println("this is what was entered: "+ "player: "+ player+ " p1: "+ p1+" p2: "+ p2+" p3: "+ p3);
+  public boolean wargame(@RequestParam(value = "id", defaultValue = "null") String player){
+    String name = player;
+    if(player.compareTo("null")==0) name =UUID.randomUUID().toString();
      War wp = new War();
+     wp.play_round(new LinkedList<Integer>(), new LinkedList<Integer>());
 
-    return null;
+    return wp.whoWon();
   }
 
 
