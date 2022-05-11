@@ -39,12 +39,12 @@ public class War {
       won = true;
       return;
     }
-    if(npc1.size() == 0 && npc2.size() == 0 && used.size() != 0){
-      humanplayer.addAll(used);
-      used.clear();
-      won = true;
-      return;
-    }
+//    if(npc1.size() == 0 && npc2.size() == 0 && used.size() != 0){
+//      humanplayer.addAll(used);
+//      used.clear();
+//      won = true;
+//      return;
+//    }
 
     System.out.println(hadties);
     int npc1size = npc1.size();
@@ -82,9 +82,15 @@ public class War {
           used.addAll(table);
           table.clear();
           used.add(humanplayer.remove());
+
           if(npc1.size()!=0){
             used.add(npc1.remove());
+          }else{
+            humanplayer.addAll(used);
+            used.clear();
+            return;
           }
+
 
 
           play_round(table,used);
@@ -131,6 +137,10 @@ public class War {
           used.add(humanplayer.remove());
           if(npc2.size()!=0){
             used.add(npc2.remove());
+          }else{
+            humanplayer.addAll(used);
+            used.clear();
+            return;
           }
 
           play_round(table,used);
@@ -175,6 +185,7 @@ public class War {
 
           used.addAll(table);
           table.clear();
+
           used.add(humanplayer.remove());
           if(npc1.size() != 0){
             used.add(npc1.remove());
