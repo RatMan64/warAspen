@@ -65,7 +65,10 @@ public class WarController {
 
 
   @GetMapping("/getwinsfor")
-  public String getWins(@RequestParam(value = "id")String query){
+  public String getWins(@RequestParam(value = "id",defaultValue = "null")String query){
+    if(query.compareTo("null") == 0){
+      return "invalid input";
+    }
     var result =  DB.getItem(Key.builder().partitionValue(query).build()); // search for name
     if(result.getid() == null){
       return "No such player";
