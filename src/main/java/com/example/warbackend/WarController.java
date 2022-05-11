@@ -22,7 +22,6 @@ public class WarController {
     String name = player;
     if(player.compareTo("null")==0) name =UUID.randomUUID().toString();
      War wp = new War();
-     wp.play_round(new LinkedList<Integer>(), new LinkedList<Integer>());
 
     return wp.whoWon();
   }

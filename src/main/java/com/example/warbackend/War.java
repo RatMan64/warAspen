@@ -1,5 +1,6 @@
 package com.example.warbackend;
 
+import java.net.HttpURLConnection;
 import java.security.PublicKey;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -12,33 +13,51 @@ public class War {
   private LinkedList<Integer> npc2;
   LinkedList<Integer> deck;
   boolean won;
+  boolean inif;
   public War(){
     won = false;
+    inif = false;
     deck = new LinkedList<Integer>(Arrays.asList(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,12,12,13,13,13,13));
     npc1 = new LinkedList<Integer>();
     npc2 = new LinkedList<Integer>();
     humanplayer = new LinkedList<Integer>();
     shuffle_deck_Start();
+    System.out.println(humanplayer);
+    System.out.println(npc1);
+    System.out.println(npc2);
+
     while(true){
       play_round(new LinkedList<Integer>(), new LinkedList<Integer>());
-      if(humanplayer.size() == 52 || humanplayer.size() == 0)break;
+      if(humanplayer.size() == 52 || humanplayer.size() == 0 || stalemate())break;
     }
   }
 
   public void play_round(LinkedList<Integer> table, LinkedList<Integer> used){ // play a round of war and replay if
 //    System.out.println( "round played");
+
     int npc1size = npc1.size();
     int npc2size = npc2.size();
+    System.out.println(humanplayer);
+    System.out.println(npc1);
+    System.out.println(npc2);
     if(humanplayer.size() == 0){
       return;
     }
+
     table.add(humanplayer.remove());
     if(npc1size != 0){
+
       table.add(npc1.remove());
+
     }
     if(npc2size!=0){
+
       table.add(npc2.remove());
+
     }
+    System.out.println(table);
+
+
 
     // everyone has played at this point
     if(npc1size == 0 && npc2size != 0){ // one npc is dead lol
@@ -57,24 +76,28 @@ public class War {
         }
 
       }else if(h<n){
-        npc2.addAll(table);
-        table.clear();
         if(used.size() != 0){
+          used.addAll(table);
+          table.clear();
           npc2.addAll(used);
           used.clear();
-        }
-        if(humanplayer.size() == 0){
-          return;
+        }else {
+          npc2.addAll(table);
+          table.clear();
+
         }
 
       }else{
-        humanplayer.addAll(table);
-        table.clear();
+
         if(used.size() != 0){
+          used.addAll(table);
+          table.clear();
           humanplayer.addAll(used);
           used.clear();
+        }else{
+          humanplayer.addAll(table);
+          table.clear();
         }
-
       }
 
     }else if(npc2size == 0 && npc1size!=0){// other npc is dead
@@ -82,7 +105,7 @@ public class War {
       int n = table.getLast();
       if(h == n){
         System.out.println("tie");
-        if(humanplayer.size() != 0){
+        if(humanplayer.size()!=0){
 
           used.addAll(table);
           table.clear();
@@ -93,22 +116,28 @@ public class War {
         }
 
       }else if(h<n){
-        npc1.addAll(table);
-        table.clear();
         if(used.size() != 0){
+          used.addAll(table);
+          table.clear();
           npc1.addAll(used);
           used.clear();
-        }
-        if(humanplayer.size() == 0){
-          return;
+        }else {
+          npc1.addAll(table);
+          table.clear();
+
         }
 
-      }else {
-        humanplayer.addAll(table);
-        table.clear();
-        if (used.size() != 0) {
+
+      }else{
+
+        if(used.size() != 0){
+          used.addAll(table);
+          table.clear();
           humanplayer.addAll(used);
           used.clear();
+        }else{
+          humanplayer.addAll(table);
+          table.clear();
         }
       }
 
@@ -118,36 +147,47 @@ public class War {
       int n2 = table.getLast();
         if(h == n1 && n2 == h){// tie
           System.out.println("tie");
-          if(humanplayer.size() == 0){
-            return;
-          }
+
           used.addAll(table);
           table.clear();
           play_round(table, used);
 
         }else if(h< n1 && n2 < n1){// n1 wins
           if(used.size() != 0){
+            used.addAll(table);
+            table.clear();
             npc1.addAll(used);
             used.clear();
+          }else{
+            npc1.addAll(table);
+            table.clear();
+
           }
-          npc1.addAll(table);
-          table.clear();
 
         }else if(h<n2 && n1 < n2){// n2 wins
           if(used.size() != 0){
+            used.addAll(table);
+            table.clear();
             npc2.addAll(used);
             used.clear();
+          }else{
+            npc2.addAll(table);
+            table.clear();
           }
-          npc2.addAll(table);
-          table.clear();
+
+
 
         }else{// human wins
           if(used.size() != 0){
+            used.addAll(table);
+            table.clear();
             humanplayer.addAll(used);
             used.clear();
+          }else{
+            humanplayer.addAll(table);
+            table.clear();
           }
-          humanplayer.addAll(table);
-          table.clear();
+
         }
 
     }
@@ -159,6 +199,9 @@ public class War {
   }
   public boolean whoWon(){
     return won;
+  }
+  public boolean stalemate(){
+    return inif;
   }
 
   public void shuffle_deck_Start(){
